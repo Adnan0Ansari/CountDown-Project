@@ -13,30 +13,41 @@ let countdown=0;
 const display = document.querySelector("#display");
 
 button.addEventListener("click", function () {
-  const userInput = parseInt(document.querySelector("#seconds").value);
-  countdown = userInput;
-     resetBut.disabled=false;
-     pauseBut.disabled=false;
-  document.querySelector("#seconds").value="0";
+      
+     
 
   if (previousTimerId != null) {
-    let ans=prompt("Are you sure you want to Stop the current time [yes/No]")
-    if(ans.toLowerCase() !=="yes"){
-     return
-    }
+    let ans=prompt("Are you sure you want to END the current time [yes/No]")
+    if( ans== null){
+       return
+      }
+      else if(ans.toLowerCase() !=="yes"){
+        return
+      }
+      else{
+      display.innerText="00:00";
        currentRunning.pause();
-       clearInterval(previousTimerId);}
-  
-  if (userInput >= 0 && !isNaN(userInput)) {
-    display.innerText = format(userInput);
+       clearInterval(previousTimerId);
+       previousTimerId=null;
+      }
+    }
+    const userInput = parseInt(document.querySelector("#seconds").value);
+    countdown = userInput;
     
+    
+ 
+  if (userInput > 0 && !isNaN(userInput)) {
+    display.innerText = format(userInput);
+    resetBut.disabled=false;
+    pauseBut.disabled=false;
+    document.querySelector("#seconds").value="0";
     currentRunning = new Audio("./alarm.mp3");
     currentRunning.play();
     startCountDown();
   }
 });
 
-
+let flag=true;
 resetBut.addEventListener("click", function(){
   if(previousTimerId!=null){
      clearInterval(previousTimerId);
@@ -47,10 +58,12 @@ resetBut.addEventListener("click", function(){
      document.querySelector("#seconds").value="";
      resetBut.disabled=true;
      pauseBut.disabled=true;
-
+     pauseBut.innerText="Pause";
+    flag=true;
   }
 })
-let flag=true;
+
+
 pauseBut.addEventListener("click", function(){
 if(flag){
   pauseBut.innerText="Resume";
